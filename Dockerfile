@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM ubuntu:22.04 AS build
 
 # Setup build environment
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -22,7 +22,7 @@ RUN git clone https://github.com/Motion-Project/motion.git  && \
    cd .. && \
    rm -fr motion
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL maintainer="lionsitroen@gmail.com"
 
 # Setup Timezone packages and avoid all interaction. This will be overwritten by the user when selecting TZ in the run command
