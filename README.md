@@ -1,6 +1,5 @@
 # motion-docker
-
-This container is built automatically whenever code is pushed to master at https://github.com/Motion-Project/motion-docker.
+This is a fork of the repository https://github.com/Motion-Project/motion-docker for manually assembling the motion image when it is necessary
 
 ## Caveats
 - If you use /dev/video, locally attached cameras or the database features of Motion, this container won't work for you at this stage.  
@@ -8,7 +7,9 @@ This container is built automatically whenever code is pushed to master at https
 
 ## How to run
 
-something like this;
+Prepare the configuration file and place it in the <your machine>/dockerapp/motion/config directory. Samples can be taken from this repository or from the motion repository. You can also find samples in the /usr/local/etc/motion/ directory if you do not mount the volume from your computer
+
+Then you can use the example below
 
 ```
 docker run -d --name=motion \
@@ -19,18 +20,18 @@ docker run -d --name=motion \
     -p 8084:8084 \
     -p 8085:8085 \
     -p 8087:8087 \
-    -e TZ="Australia/Brisbane" \
-    -v /volume1/motion/config:/usr/local/etc/motion \
-    -v /volume1/motion/storage:/var/lib/motion \
-    --restart=always \
-    motionproject/motion:latest
+    -e TZ="Europe/Berlin" \
+    -v <your machine>/dockerapp/motion/config:/usr/local/etc/motion \
+    -v <your machine>/dockerapp/motion/storage:/var/lib/motion \
+    --restart=unless-stopped \
+    lionsitroen/motion:latest
 ```
 ## How to Update
 
 ```
 docker stop motion
 docker rm motion
-docker pull motionproject/motion:latest
+docker pull lionsitroen/motion:latest
 - rerun above 'run' command
 ```
 
@@ -39,15 +40,8 @@ docker pull motionproject/motion:latest
 - name = a label for the container, should be motion or motion-project (but can be anything)
 - ports = each -p line denotes 1 camera and its stream port
 - TZ = the timezone the container will be running
-- volumes = /dockerserver/path/to/config
-          = /dockerserver/path/to/storage
           
 ## Release Notes
 
-- 29/09/20 Use multi-stage build
-- 29/01/20 Triggered new build to bump to 4.3.0
-- 21/01/19 Triggered new build to capture passthrough fixes from git master
-- 30/11/18 Bumped to Ubuntu 18.04
-- 30/11/18 Cosmetic changes and added x264 package
-- 29/11/18 Initial build of Docker container 
-- 29/10/18 Motion 4.2 released
+- 13/09/22 Bumped to Ubuntu 22.04 and Motion 4.4.0
+- 13/09/22 Forked from https://github.com/Motion-Project/motion-docker.

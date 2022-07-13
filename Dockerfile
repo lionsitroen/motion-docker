@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS build
+FROM ubuntu:20.04 AS build
 
 # Setup build environment
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -22,8 +22,8 @@ RUN git clone https://github.com/Motion-Project/motion.git  && \
    cd .. && \
    rm -fr motion
 
-FROM ubuntu:18.04
-LABEL maintainer="TBD"
+FROM ubuntu:20.04
+LABEL maintainer="lionsitroen@gmail.com"
 
 # Setup Timezone packages and avoid all interaction. This will be overwritten by the user when selecting TZ in the run command
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -50,11 +50,11 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 COPY --from=build /usr/local /usr/local
 
 # R/W needed for motion to update configurations
-VOLUME /usr/local/etc/motion
+# VOLUME /usr/local/etc/motion
 # R/W needed for motion to update Video & images
-VOLUME /var/lib/motion
+# VOLUME /var/lib/motion
 
-CMD test -e /usr/local/etc/motion/motion.conf || \
+RUN test -e /usr/local/etc/motion/motion.conf || \
     cp /usr/local/etc/motion/motion-dist.conf /usr/local/etc/motion/motion.conf
 
 CMD [ "motion", "-n" ]
